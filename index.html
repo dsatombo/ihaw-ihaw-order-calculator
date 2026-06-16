@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Food Order Calculator</title>
+  <title>Mang Jose Food Order Calculator</title>
   <style>
     * {
       box-sizing: border-box;
@@ -74,6 +74,16 @@
       color: white;
     }
 
+    .item-btn-bbq { background: #8B4513; color: white; }
+.item-btn-tenga { background: #ff6a00; color: white; }
+.item-btn-isawbaboy { background: #be4f00; color: white; }
+.item-btn-isawmanok { background: #bf7a49; color: white; }
+.item-btn-ulomanok { background: #643e23; color: white; }
+.item-btn-balatbaboy { background: #b15c20; color: white; }
+.item-btn-dugo { background: #000000; color: white; }
+.item-btn-hotdog { background: #DC2626; color: white; }
+.item-btn-rice { background: #b4b4b4; color: black;}
+
     .item-btn:hover {
       background: #1d4ed8;
     }
@@ -111,42 +121,45 @@
 </head>
 <body>
   <div class="calculator">
-    <h1>Order Calculator</h1>
+    <h1>Jose Ihaw-Ihaw Calculator</h1>
 
     <div class="display">
       <small>Total Price</small>
       <div class="total" id="totalPrice">₱0.00</div>
     </div>
 
+    <div class="order-list" id="orderList">
+      <div class="empty">No items selected</div>
+    </div>
+
     <div class="buttons">
-      <button class="item-btn" onclick="addItem('BBQ')">BBQ<br>₱25</button>
-      <button class="item-btn" onclick="addItem('TENGA')">TENGA<br>₱25</button>
-      <button class="item-btn" onclick="addItem('Isaw Baboy')">Isaw Baboy<br>₱15</button>
-      <button class="item-btn" onclick="addItem('Dugo')">Dugo<br>₱10</button>
-      <button class="item-btn" onclick="addItem('Isaw Manok')">Isaw Manok<br>₱10</button>
-      <button class="item-btn" onclick="addItem('Balat')">Balat<br>₱10</button>
-      <button class="item-btn" onclick="addItem('Hotdog')">Hotdog<br>₱20</button>
-      <button class="item-btn" onclick="addItem('Ulo Manok')">Ulo Manok<br>₱15</button>
+      <button class="item-btn-bbq" onclick="addItem('BBQ')">BBQ<br>₱25</button>
+      <button class="item-btn-tenga" onclick="addItem('TENGA')">TENGA<br>₱25</button>
+      <button class="item-btn-isawbaboy" onclick="addItem('ISAW BABOY')">ISAW BABOY<br>₱15</button>
+      <button class="item-btn-isawmanok" onclick="addItem('ISAW MANOK')">ISAW MANOK<br>₱10</button>
+      <button class="item-btn-balatbaboy" onclick="addItem('BALAT')">BALAT BABOY<br>₱10</button>
+      <button class="item-btn-ulomanok" onclick="addItem('ULO MANOK')">ULO MANOK<br>₱15</button>
+      <button class="item-btn-dugo" onclick="addItem('DUGO')">DUGO<br>₱10</button>
+      <button class="item-btn-hotdog" onclick="addItem('HOTDOG')">HOTDOG<br>₱20</button>
+      <button class="item-btn-rice" onclick="addItem('RICE')">RICE<br>₱12</button>
     </div>
 
     <button class="clear-btn" onclick="clearOrder()">Clear Order</button>
 
-    <div class="order-list" id="orderList">
-      <div class="empty">No items selected</div>
-    </div>
   </div>
 
   <script>
     const menu = {
       BBQ: 25,
       TENGA: 25,
-      'Isaw Baboy': 15,
-      Dugo: 10,
-      'Isaw Manok': 10,
-      Balat: 10,
-      Hotdog: 20,
-      'Ulo Manok': 15
-    };
+      'ISAW BABOY': 15,
+      DUGO: 10,
+      'ISAW MANOK': 10,
+      BALAT: 10,
+      HOTDOG: 20,
+      'ULO MANOK': 15,
+      RICE: 12
+    };  
 
     const order = {};
 
@@ -160,35 +173,67 @@
     }
 
     function updateDisplay() {
-      const orderList = document.getElementById('orderList');
-      const totalPrice = document.getElementById('totalPrice');
+  const orderList = document.getElementById('orderList');
+  const totalPrice = document.getElementById('totalPrice');
 
-      orderList.innerHTML = '';
-      let grandTotal = 0;
+  orderList.innerHTML = '';
+  let grandTotal = 0;
 
-      Object.keys(order).forEach(itemName => {
-        const quantity = order[itemName];
-        const price = menu[itemName];
-        const lineTotal = quantity * price;
-        grandTotal += lineTotal;
+  const itemOrder = [
+    "BBQ",
+    "TENGA",
+    "ISAW BABOY",
+    "ISAW MANOK",
+    "ULO MANOK",
+    "BALAT",
+    "DUGO",
+    "HOTDOG",
+    "RICE"
+  ];
 
-        const row = document.createElement('div');
-        row.className = 'order-row';
-        row.innerHTML = `
-          <span>${itemName} x ${quantity}</span>
-          <strong>₱${lineTotal.toFixed(2)}</strong>
-        `;
+  itemOrder.forEach(itemName => {
+    const quantity = order[itemName] || 0;
 
-        orderList.appendChild(row);
-      });
+    if (quantity === 0) return;
 
-      if (grandTotal === 0) {
-        orderList.innerHTML = '<div class="empty">No items selected</div>';
-      }
+    const price = menu[itemName];
+    const lineTotal = quantity * price;
+    grandTotal += lineTotal;
 
-      totalPrice.textContent = `₱${grandTotal.toFixed(2)}`;
-    }
+    const row = document.createElement('div');
+    row.className = 'order-row';
 
+    row.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+        <div>
+          <span>${itemName}</span>
+          <span style="
+            margin-left:8px;
+            padding:2px 8px;
+            background:#ff9800;
+            color:white;
+            border-radius:12px;
+            font-weight:bold;
+            font-size:1.1em;
+          ">
+            ×${quantity}
+          </span>
+        </div>
+        <strong style="font-size:1.1em;">
+          ₱${lineTotal.toFixed(2)}
+        </strong>
+      </div>
+    `;
+
+    orderList.appendChild(row);
+  });
+
+  if (grandTotal === 0) {
+    orderList.innerHTML = '<div class="empty">No items selected</div>';
+  }
+
+  totalPrice.textContent = `₱${grandTotal.toFixed(2)}`;
+}
     function clearOrder() {
       Object.keys(order).forEach(itemName => delete order[itemName]);
       updateDisplay();
