@@ -117,6 +117,46 @@
       color: #6b7280;
       padding: 12px 0;
     }
+
+    .item-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 12px;
+  overflow: hidden;
+  min-height: 70px;
+}
+
+.item-content {
+  flex: 1;
+  text-align: center;
+  font-size: 15px;
+  font-weight: bold;
+  color: inherit;
+}
+
+.arrow-btn {
+  width: 45px;
+  height: 70px;
+  border: none;
+  background: rgba(255,255,255,0.2);
+  color: inherit;
+  font-size: 24px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.arrow-btn:hover {
+  background: rgba(255,255,255,0.35);
+}
+
+.item-btn-rice {
+  color: black;
+}
+
+.item-btn-rice .arrow-btn {
+  color: black;
+}
   </style>
 </head>
 <body>
@@ -132,17 +172,79 @@
       <div class="empty">No items selected</div>
     </div>
 
-    <div class="buttons">
-      <button class="item-btn-bbq" onclick="addItem('BBQ')">BBQ<br>₱25</button>
-      <button class="item-btn-tenga" onclick="addItem('TENGA')">TENGA<br>₱25</button>
-      <button class="item-btn-isawbaboy" onclick="addItem('ISAW BABOY')">ISAW BABOY<br>₱15</button>
-      <button class="item-btn-isawmanok" onclick="addItem('ISAW MANOK')">ISAW MANOK<br>₱10</button>
-      <button class="item-btn-balatbaboy" onclick="addItem('BALAT')">BALAT BABOY<br>₱10</button>
-      <button class="item-btn-ulomanok" onclick="addItem('ULO MANOK')">ULO MANOK<br>₱15</button>
-      <button class="item-btn-dugo" onclick="addItem('DUGO')">DUGO<br>₱10</button>
-      <button class="item-btn-hotdog" onclick="addItem('HOTDOG')">HOTDOG<br>₱20</button>
-      <button class="item-btn-rice" onclick="addItem('RICE')">RICE<br>₱12</button>
+<div class="buttons">
+  <div class="item-card item-btn-bbq">
+    <button class="arrow-btn" onclick="changeQty('BBQ', -1)">◀</button>
+    <div class="item-content">
+      BBQ<br>₱25
     </div>
+    <button class="arrow-btn" onclick="changeQty('BBQ', 1)">▶</button>
+  </div>
+
+  <div class="item-card item-btn-tenga">
+    <button class="arrow-btn" onclick="changeQty('TENGA', -1)">◀</button>
+    <div class="item-content">
+      TENGA<br>₱25
+    </div>
+    <button class="arrow-btn" onclick="changeQty('TENGA', 1)">▶</button>
+  </div>
+
+  <div class="item-card item-btn-isawbaboy">
+    <button class="arrow-btn" onclick="changeQty('ISAW BABOY', -1)">◀</button>
+    <div class="item-content">
+      ISAW BABOY<br>₱15
+    </div>
+    <button class="arrow-btn" onclick="changeQty('ISAW BABOY', 1)">▶</button>
+  </div>
+
+  <div class="item-card item-btn-isawmanok">
+    <button class="arrow-btn" onclick="changeQty('ISAW MANOK', -1)">◀</button>
+    <div class="item-content">
+      ISAW MANOK<br>₱10
+    </div>
+    <button class="arrow-btn" onclick="changeQty('ISAW MANOK', 1)">▶</button>
+  </div>
+
+  <div class="item-card item-btn-balatbaboy">
+    <button class="arrow-btn" onclick="changeQty('BALAT', -1)">◀</button>
+    <div class="item-content">
+      BALAT BABOY<br>₱10
+    </div>
+    <button class="arrow-btn" onclick="changeQty('BALAT', 1)">▶</button>
+  </div>
+
+  <div class="item-card item-btn-ulomanok">
+    <button class="arrow-btn" onclick="changeQty('ULO MANOK', -1)">◀</button>
+    <div class="item-content">
+      ULO MANOK<br>₱15
+    </div>
+    <button class="arrow-btn" onclick="changeQty('ULO MANOK', 1)">▶</button>
+  </div>
+
+  <div class="item-card item-btn-dugo">
+    <button class="arrow-btn" onclick="changeQty('DUGO', -1)">◀</button>
+    <div class="item-content">
+      DUGO<br>₱10
+    </div>
+    <button class="arrow-btn" onclick="changeQty('DUGO', 1)">▶</button>
+  </div>
+
+  <div class="item-card item-btn-hotdog">
+    <button class="arrow-btn" onclick="changeQty('HOTDOG', -1)">◀</button>
+    <div class="item-content">
+      HOTDOG<br>₱20
+    </div>
+    <button class="arrow-btn" onclick="changeQty('HOTDOG', 1)">▶</button>
+  </div>
+
+  <div class="item-card item-btn-rice">
+    <button class="arrow-btn" onclick="changeQty('RICE', -1)">◀</button>
+    <div class="item-content">
+      RICE<br>₱12
+    </div>
+    <button class="arrow-btn" onclick="changeQty('RICE', 1)">▶</button>
+  </div>
+</div>
 
     <button class="clear-btn" onclick="clearOrder()">Clear Order</button>
 
@@ -163,14 +265,15 @@
 
     const order = {};
 
-    function addItem(itemName) {
-      if (!order[itemName]) {
-        order[itemName] = 0;
-      }
+ function changeQty(itemName, delta) {
+  order[itemName] = (order[itemName] || 0) + delta;
 
-      order[itemName]++;
-      updateDisplay();
-    }
+  if (order[itemName] <= 0) {
+    delete order[itemName];
+  }
+
+  updateDisplay();
+}
 
     function updateDisplay() {
   const orderList = document.getElementById('orderList');
