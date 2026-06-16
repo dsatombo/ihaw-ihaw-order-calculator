@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Food Order Calculator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f4f6f8;
+    }
+
+    .calculator {
+      width: 380px;
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    h1 {
+      margin: 0 0 16px;
+      text-align: center;
+      font-size: 24px;
+    }
+
+    .display {
+      background: #111827;
+      color: white;
+      padding: 18px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      text-align: right;
+    }
+
+    .display small {
+      display: block;
+      color: #9ca3af;
+      margin-bottom: 6px;
+    }
+
+    .total {
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .item-btn {
+      background: #2563eb;
+      color: white;
+    }
+
+    .item-btn:hover {
+      background: #1d4ed8;
+    }
+
+    .clear-btn {
+      width: 100%;
+      background: #ef4444;
+      color: white;
+      margin-bottom: 16px;
+    }
+
+    .clear-btn:hover {
+      background: #dc2626;
+    }
+
+    .order-list {
+      border-top: 1px solid #e5e7eb;
+      padding-top: 12px;
+    }
+
+    .order-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #f1f1f1;
+      font-size: 15px;
+    }
+
+    .empty {
+      text-align: center;
+      color: #6b7280;
+      padding: 12px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <h1>Order Calculator</h1>
+
+    <div class="display">
+      <small>Total Price</small>
+      <div class="total" id="totalPrice">₱0.00</div>
+    </div>
+
+    <div class="buttons">
+      <button class="item-btn" onclick="addItem('BBQ')">BBQ<br>₱25</button>
+      <button class="item-btn" onclick="addItem('TENGA')">TENGA<br>₱25</button>
+      <button class="item-btn" onclick="addItem('Isaw Baboy')">Isaw Baboy<br>₱15</button>
+      <button class="item-btn" onclick="addItem('Dugo')">Dugo<br>₱10</button>
+      <button class="item-btn" onclick="addItem('Isaw Manok')">Isaw Manok<br>₱10</button>
+      <button class="item-btn" onclick="addItem('Balat')">Balat<br>₱10</button>
+      <button class="item-btn" onclick="addItem('Hotdog')">Hotdog<br>₱20</button>
+      <button class="item-btn" onclick="addItem('Ulo Manok')">Ulo Manok<br>₱15</button>
+    </div>
+
+    <button class="clear-btn" onclick="clearOrder()">Clear Order</button>
+
+    <div class="order-list" id="orderList">
+      <div class="empty">No items selected</div>
+    </div>
+  </div>
+
+  <script>
+    const menu = {
+      BBQ: 25,
+      TENGA: 25,
+      'Isaw Baboy': 15,
+      Dugo: 10,
+      'Isaw Manok': 10,
+      Balat: 10,
+      Hotdog: 20,
+      'Ulo Manok': 15
+    };
+
+    const order = {};
+
+    function addItem(itemName) {
+      if (!order[itemName]) {
+        order[itemName] = 0;
+      }
+
+      order[itemName]++;
+      updateDisplay();
+    }
+
+    function updateDisplay() {
+      const orderList = document.getElementById('orderList');
+      const totalPrice = document.getElementById('totalPrice');
+
+      orderList.innerHTML = '';
+      let grandTotal = 0;
+
+      Object.keys(order).forEach(itemName => {
+        const quantity = order[itemName];
+        const price = menu[itemName];
+        const lineTotal = quantity * price;
+        grandTotal += lineTotal;
+
+        const row = document.createElement('div');
+        row.className = 'order-row';
+        row.innerHTML = `
+          <span>${itemName} x ${quantity}</span>
+          <strong>₱${lineTotal.toFixed(2)}</strong>
+        `;
+
+        orderList.appendChild(row);
+      });
+
+      if (grandTotal === 0) {
+        orderList.innerHTML = '<div class="empty">No items selected</div>';
+      }
+
+      totalPrice.textContent = `₱${grandTotal.toFixed(2)}`;
+    }
+
+    function clearOrder() {
+      Object.keys(order).forEach(itemName => delete order[itemName]);
+      updateDisplay();
+    }
+  </script>
+</body>
+</html>
