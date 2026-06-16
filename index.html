@@ -11,13 +11,10 @@
     }
 
     html,
-body {
+    body {
     touch-action: manipulation;
-}
-    button {
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-}
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
@@ -34,6 +31,11 @@ body {
       padding: 20px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
     }
+
+    button {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
 
     h1 {
       margin: 0 0 16px;
@@ -165,16 +167,166 @@ body {
 .item-btn-rice .arrow-btn {
   color: black;
 }
+
+
+.display {
+  color: white;
+  padding: 18px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  text-align: right;
+}
+
+.display small {
+  display: block;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 6px;
+}
+
+.total-display {
+  background: #111827; /* Dark Gray */
+}
+
+.payment-display {
+  background: #2563eb; /* Blue */
+}
+
+.change-display {
+  background: #16a34a; /* Green */
+}
+
+.total {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.payment-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.payment-buttons button {
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  background: #2563eb;
+  color: white;
+  transition: 0.15s;
+}
+
+.payment-buttons button:hover {
+  background: #1d4ed8;
+}
+
+.reset-payment {
+  grid-column: span 2;
+  background: #ef4444 !important;
+}
+
+.reset-payment:hover {
+  background: #dc2626 !important;
+}
+
+
+.payment-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.payment-row .display {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.payment-display {
+  background: #2563eb;
+}
+
+.change-display {
+  background: #16a34a;
+}
+
+.payment-row .total {
+  font-size: 24px; /* Slightly smaller so both fit nicely */
+}
+
+.payment-btn {
+  width: 100%;
+  background: #16a34a;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.payment-btn:hover {
+  background: #15803d;
+}
+
+#paymentSection {
+  margin-top: 20px;
+}
+
+.payment-toggle-btn {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.payment-toggle-btn:hover {
+  color: #374151;
+}
+
+.payment-toggle-btn {
+  width: 100%;
+  background:#3a3a3a;
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 0;
+  margin: 16px 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.payment-toggle-btn:hover {
+  background: #9b9b9b;
+  color: #374151;
+}
+
+.payment-toggle-btn:active {
+  background: #f3f4f6;
+}
   </style>
 </head>
 <body>
   <div class="calculator">
     <h1>Jose Ihaw-Ihaw Calculator</h1>
 
-    <div class="display">
-      <small>Total Price</small>
-      <div class="total" id="totalPrice">₱0.00</div>
-    </div>
+<div class="display total-display">
+  <small>Total Price</small>
+  <div class="total" id="totalPrice">₱0.00</div>
+</div>
+
 
     <div class="order-list" id="orderList">
       <div class="empty">No items selected</div>
@@ -254,7 +406,45 @@ body {
   </div>
 </div>
 
-    <button class="clear-btn" onclick="clearOrder()">Clear Order</button>
+<div>
+<button class="clear-btn" onclick="clearOrder()">Clear Order</button>
+<button id="paymentToggle" class="payment-toggle-btn" onclick="togglePayment()">
+  ▼ Payment
+</button>
+</div>
+
+
+      <div id="paymentSection" style="display: none;">
+<div class="payment-row">
+  <div class="display payment-display">
+    <small>Payment</small>
+    <div class="total" id="paymentAmount">₱0.00</div>
+  </div>
+
+  <div class="display change-display">
+    <small>Change</small> 
+    <div class="total" id="changeAmount">₱0.00</div>
+  </div>
+</div>
+
+<div class="payment-buttons">
+      <button onclick="addPayment(1)">+₱1</button>
+         <button onclick="addPayment(5)">+₱5</button>
+  <button onclick="addPayment(10)">+₱10</button>
+  <button onclick="addPayment(20)">+₱20</button>
+  <button onclick="addPayment(50)">+₱50</button>
+
+  <button onclick="addPayment(100)">+₱100</button>
+  <button onclick="addPayment(200)">+₱200</button>
+  <button onclick="addPayment(500)">+₱500</button>
+
+  <button onclick="addPayment(1000)">+₱1000</button>
+
+</div> 
+
+<button onclick="clearPayment()" class="clear-btn">Reset Payment</button>
+
+</div>
 
   </div>
 
@@ -272,6 +462,7 @@ body {
     };  
 
     const order = {};
+    let payment = 0;
 
  function changeQty(itemName, delta) {
   order[itemName] = (order[itemName] || 0) + delta;
@@ -344,11 +535,43 @@ body {
   }
 
   totalPrice.textContent = `₱${grandTotal.toFixed(2)}`;
+
+  document.getElementById("paymentAmount").textContent =
+  `₱${payment.toFixed(2)}`;
+
+const change = payment - grandTotal;
+
+document.getElementById("changeAmount").textContent =
+  `₱${change.toFixed(2)}`;
 }
     function clearOrder() {
       Object.keys(order).forEach(itemName => delete order[itemName]);
       updateDisplay();
     }
+    function addPayment(amount) {
+  payment += amount;
+  updateDisplay();
+}
+
+function clearPayment() {
+  payment = 0;
+  updateDisplay();
+}
+
+function clearAll(){
+    clearPayment();
+    clearOrder();
+}
+
+function togglePayment() {
+  const paymentSection = document.getElementById("paymentSection");
+  const button = document.getElementById("paymentToggle");
+
+  const isHidden = paymentSection.style.display === "none";
+
+  paymentSection.style.display = isHidden ? "block" : "none";
+  button.innerHTML = isHidden ? "▲ Payment" : "▼ Payment";
+}
   </script>
 </body>
 </html>
